@@ -1,0 +1,6 @@
+{"id":"q001","answer":"Current cadence is at least 1 hour per week.","tokens":812,"latencyMs":2280,"costUsd":0.0026,"tier":"R1"}
+{"id":"q002","answer":"Benchmark against RothC and DayCent.","tokens":790,"latencyMs":2190,"costUsd":0.0025,"tier":"R1"}
+{"id":"q003","answer":"Use backtest -> shadow -> pilot -> guarded production.","tokens":845,"latencyMs":2410,"costUsd":0.0027,"tier":"R1"}
+{"id":"q004","answer":"Defer or hedge when uncertainty and downside are high.","tokens":870,"latencyMs":2510,"costUsd":0.0028,"tier":"R1"}
+{"id":"q005","answer":"No — private user memory should not be used in shared contexts.","tokens":760,"latencyMs":2140,"costUsd":0.0024,"tier":"R0"}
+{"id":"q006","answer":"Default retrieval tier is R0.","tokens":700,"latencyMs":1960,"costUsd":0.0022,"tier":"R0"}

@@ -1,0 +1,11 @@
+{
+  "name": "thermodynamic-memory-architecture",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "eval:oracle": "node scripts/run-thermo-eval.mjs --oracle --label oracle",
+    "eval:real": "node scripts/run-thermo-eval.mjs --predictions eval/thermo-v1.predictions.example.jsonl --label real-example"
+  },
+  "license": "MIT"
+}

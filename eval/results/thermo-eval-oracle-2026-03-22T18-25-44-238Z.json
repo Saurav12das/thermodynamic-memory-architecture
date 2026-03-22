@@ -1,0 +1,86 @@
+{
+  "summary": {
+    "label": "oracle",
+    "dataset": "eval/thermo-v1.seed.jsonl",
+    "predictions": "oracle",
+    "totalCases": 6,
+    "accuracyOverall": 1,
+    "accuracyByTrack": {
+      "temporal": 1,
+      "decision": 1,
+      "trust": 1,
+      "cost": 1
+    },
+    "hallucinatedMemoryRate": 0,
+    "meanTokensPerQuery": 716.67,
+    "p50LatencyMs": 2150,
+    "p95LatencyMs": 2650,
+    "meanCostUsdPerQuery": 0.002267,
+    "utilityPerDollar": 441.18,
+    "tierMix": {
+      "R0": 1
+    }
+  },
+  "rows": [
+    {
+      "id": "q001",
+      "track": "temporal",
+      "pass": true,
+      "answer": "at least 1 hour per week",
+      "tokens": 650,
+      "latencyMs": 1400,
+      "costUsd": 0.0018,
+      "tier": "R0"
+    },
+    {
+      "id": "q002",
+      "track": "temporal",
+      "pass": true,
+      "answer": "RothC and DayCent",
+      "tokens": 690,
+      "latencyMs": 1650,
+      "costUsd": 0.0022,
+      "tier": "R0"
+    },
+    {
+      "id": "q003",
+      "track": "temporal",
+      "pass": true,
+      "answer": "backtest -> shadow -> pilot -> guarded production",
+      "tokens": 730,
+      "latencyMs": 1900,
+      "costUsd": 0.0026,
+      "tier": "R0"
+    },
+    {
+      "id": "q004",
+      "track": "decision",
+      "pass": true,
+      "answer": "defer; or hedge",
+      "tokens": 770,
+      "latencyMs": 2150,
+      "costUsd": 0.003,
+      "tier": "R0"
+    },
+    {
+      "id": "q005",
+      "track": "trust",
+      "pass": true,
+      "answer": "no",
+      "tokens": 810,
+      "latencyMs": 2400,
+      "costUsd": 0.0018,
+      "tier": "R0"
+    },
+    {
+      "id": "q006",
+      "track": "cost",
+      "pass": true,
+      "answer": "R0",
+      "tokens": 650,
+      "latencyMs": 2650,
+      "costUsd": 0.0022,
+      "tier": "R0"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "summary": {
+    "label": "real-example",
+    "dataset": "eval/thermo-v1.seed.jsonl",
+    "predictions": "eval/thermo-v1.predictions.example.jsonl",
+    "totalCases": 6,
+    "accuracyOverall": 1,
+    "accuracyByTrack": {
+      "temporal": 1,
+      "decision": 1,
+      "trust": 1,
+      "cost": 1
+    },
+    "hallucinatedMemoryRate": 0,
+    "meanTokensPerQuery": 796.17,
+    "p50LatencyMs": 2280,
+    "p95LatencyMs": 2510,
+    "meanCostUsdPerQuery": 0.002533,
+    "utilityPerDollar": 394.74,
+    "tierMix": {
+      "R1": 0.6667,
+      "R0": 0.3333
+    }
+  },
+  "rows": [
+    {
+      "id": "q001",
+      "track": "temporal",
+      "pass": true,
+      "answer": "Current cadence is at least 1 hour per week.",
+      "tokens": 812,
+      "latencyMs": 2280,
+      "costUsd": 0.0026,
+      "tier": "R1"
+    },
+    {
+      "id": "q002",
+      "track": "temporal",
+      "pass": true,
+      "answer": "Benchmark against RothC and DayCent.",
+      "tokens": 790,
+      "latencyMs": 2190,
+      "costUsd": 0.0025,
+      "tier": "R1"
+    },
+    {
+      "id": "q003",
+      "track": "temporal",
+      "pass": true,
+      "answer": "Use backtest -> shadow -> pilot -> guarded production.",
+      "tokens": 845,
+      "latencyMs": 2410,
+      "costUsd": 0.0027,
+      "tier": "R1"
+    },
+    {
+      "id": "q004",
+      "track": "decision",
+      "pass": true,
+      "answer": "Defer or hedge when uncertainty and downside are high.",
+      "tokens": 870,
+      "latencyMs": 2510,
+      "costUsd": 0.0028,
+      "tier": "R1"
+    },
+    {
+      "id": "q005",
+      "track": "trust",
+      "pass": true,
+      "answer": "No — private user memory should not be used in shared contexts.",
+      "tokens": 760,
+      "latencyMs": 2140,
+      "costUsd": 0.0024,
+      "tier": "R0"
+    },
+    {
+      "id": "q006",
+      "track": "cost",
+      "pass": true,
+      "answer": "Default retrieval tier is R0.",
+      "tokens": 700,
+      "latencyMs": 1960,
+      "costUsd": 0.0022,
+      "tier": "R0"
+    }
+  ]
+}
