@@ -1,0 +1,5 @@
+{"id":"q001","track":"temporal","question":"What is the latest stated cadence for model work?","answerType":"contains","ground_truth":"at least 1 hour per week"}
+{"id":"q002","track":"temporal","question":"What benchmark pair is required for side-by-side comparison?","answerType":"contains","ground_truth":"RothC and DayCent"}
+{"id":"q003","track":"temporal","question":"What rollout sequence is recommended?","answerType":"contains","ground_truth":"backtest -> shadow -> pilot -> guarded production"}
+{"id":"q004","track":"decision","question":"Given high uncertainty and downside, what should policy choose?","answerType":"rubric","rubric":{"good":["defer","or hedge"]}}
+{"id":"q005","track":"cost","question":"What is the default retrieval tier?","answerType":"contains","ground_truth":"R0"}
