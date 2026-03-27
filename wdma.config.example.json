@@ -1,0 +1,36 @@
+{
+  "$schema": "./wdma.config.schema.json",
+  "$comment": "Example WDMA configuration. Copy to wdma.config.json and customize.",
+
+  "persistPath": "./data/memory.json",
+  "maxRecords": 10000,
+
+  "weights": {
+    "alpha": 0.25,
+    "beta": 0.35,
+    "gamma": 0.25,
+    "delta": 0.15
+  },
+
+  "decayHalfLifeMs": 604800000,
+
+  "gateThreshold": 0.15,
+  "confidenceFloor": 0.6,
+  "contradictionCeiling": 0.3,
+  "maxTier": "R3",
+
+  "tierCaps": {
+    "R0": { "maxCalls": 1, "maxTokens": 500, "timeoutMs": 2000 },
+    "R1": { "maxCalls": 2, "maxTokens": 1000, "timeoutMs": 4000 },
+    "R2": { "maxCalls": 2, "maxTokens": 2000, "timeoutMs": 6000 },
+    "R3": { "maxCalls": 4, "maxTokens": 4000, "timeoutMs": 10000 }
+  },
+
+  "initialStage": "reactive",
+
+  "stageThresholds": {
+    "reactiveToReflective": { "minMemories": 50, "minQueries": 20 },
+    "reflectiveToAdaptive": { "minPatterns": 5, "minReuseRate": 0.1 },
+    "adaptiveToAutonomous": { "minAdaptationSlope": 0.05, "minUtilityPerDollar": 100 }
+  }
+}
