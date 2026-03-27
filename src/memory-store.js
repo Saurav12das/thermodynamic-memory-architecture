@@ -85,20 +85,38 @@ export class MemoryStore {
     return [...ids].map(id => this.records.get(id)).filter(Boolean);
   }
 
-  /** Find records whose fact contains a substring (case-insensitive) */
+  /** Find records whose fact matches the query via word overlap (case-insensitive) */
   search(query, opts = {}) {
-    const q = query.toLowerCase();
     const layer = opts.layer || null;
     const limit = opts.limit || 20;
-    const results = [];
+    const minScore = opts.minScore ?? 0.1;
+
+    const queryWords = new Set(query.toLowerCase().split(/\s+/).filter(w => w.length > 2));
+    if (queryWords.size === 0) return [];
 
     const candidates = layer ? this.getByLayer(layer) : [...this.records.values()];
+    const scored = [];
+
     for (const rec of candidates) {
-      if (rec.fact && rec.fact.toLowerCase().includes(q)) {
-        results.push(rec);
-        if (results.length >= limit) break;
+      if (!rec.fact) continue;
+      const factWords = new Set(rec.fact.toLowerCase().split(/\s+/).filter(w => w.length > 2));
+      if (factWords.size === 0) continue;
+
+      // Jaccard-like: count query words found in fact
+      let hits = 0;
+      for (const w of queryWords) {
+        if (factWords.has(w)) hits++;
+      }
+      const score = hits / queryWords.size;
+
+      if (score >= minScore) {
+        scored.push({ rec, score });
       }
     }
+
+    // Sort by score descending, then return records
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, limit).map(s => s.rec);
 
     return results;
   }

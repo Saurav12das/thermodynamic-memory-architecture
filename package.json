@@ -10,7 +10,8 @@
     "eval:oracle": "node scripts/run-thermo-eval.mjs --oracle --label oracle",
     "eval:real": "node scripts/run-thermo-eval.mjs --predictions eval/thermo-v1.predictions.example.jsonl --label real-example",
     "example:quickstart": "node examples/quickstart.js",
-    "example:agent": "node examples/agent-integration.js"
+    "example:agent": "node examples/agent-integration.js",
+    "test:benchmark": "node tests/run-multi-agent-test.js"
   },
   "license": "MIT"
 }
