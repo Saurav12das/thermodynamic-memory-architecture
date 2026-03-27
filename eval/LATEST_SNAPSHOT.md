@@ -1,7 +1,7 @@
 # Thermodynamic Memory Snapshot
 
-Generated: 2026-03-22T18:25:44.412Z
-Run: eval/results/thermo-eval-real-example-2026-03-22T18-25-44-411Z.json
+Generated: 2026-03-27T20:26:59.404Z
+Run: eval/results/thermo-eval-oracle-2026-03-27T20-26-59-404Z.json
 
 - Accuracy@1: 100%
 - Temporal: 100%
@@ -9,7 +9,7 @@ Run: eval/results/thermo-eval-real-example-2026-03-22T18-25-44-411Z.json
 - Trust: 100%
 - Cost: 100%
 - Hallucinated memory rate: 0%
-- p50/p95 latency: 2280/2510 ms
-- Mean tokens/query: 796.17
-- Mean $/query: $0.002533
-- Utility-per-dollar: 394.74
+- p50/p95 latency: 2150/2650 ms
+- Mean tokens/query: 716.67
+- Mean $/query: $0.002267
+- Utility-per-dollar: 441.18
