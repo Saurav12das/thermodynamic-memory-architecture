@@ -255,6 +255,163 @@ const caps = wdma.stages.getCapabilities();
 
 ---
 
+## Jolt-Based Encoding
+
+Instead of saving everything, WDMA uses **prediction error** ("jolt") to decide whether a memory is worth encoding. The threshold rises with domain experience — the system becomes harder to surprise as it learns.
+
+```
+Jolt(e) = |observed(e) - predicted(e)|
+θ(d) = θ_base + θ_growth · log(1 + experience(d))
+encode(e) = Jolt(e) > θ(domain(e))
+```
+
+The jolt is a composite of three signals:
+- **Novelty** (35%): how different is this from existing memories?
+- **Contradiction** (40%): does this conflict with established facts?
+- **Information gain** (25%): how much new content does this add?
+
+Override with a custom prediction function for embedding-based jolt:
+
+```js
+const wdma = createWDMA({
+  joltPredictFn: (event, domainHistory) => {
+    // Your embedding similarity check here
+    return { predicted: 'expected text', confidence: 0.8 };
+  },
+});
+```
+
+---
+
+## Promotion Utility Function
+
+Memories are promoted/demoted across a 6-layer typed graph based on the formalized utility:
+
+```
+U(m) = α·R(m) + β·N(m) + γ·C(m) + δ·V(m) - λ·A(m)
+```
+
+Subject to constraints:
+- `ErrorRate(m) ≤ ε_max`
+- `Cost(m) ≤ budget`
+- `Staleness(m) ≤ τ_max`
+
+| Signal | Weight | Meaning |
+|--------|--------|---------|
+| R(m) | α = 0.20 | Recency/relevance |
+| N(m) | β = 0.20 | Novelty (from jolt encoder) |
+| C(m) | γ = 0.25 | Correctness (from verification gate) |
+| V(m) | δ = 0.20 | Downstream task value |
+| A(m) | λ = 0.15 | Access cost (penalty) |
+
+### Promotion Layers (L0–L5)
+
+The layers are a **typed memory graph** (not a vertical stack):
+
+| Layer | Threshold | Type | Decay Rate |
+|-------|-----------|------|------------|
+| **L0_buffer** | 0.00 | Temporary intake | Fast (1.0) |
+| **L1_working** | 0.15 | Active working memory | Moderate (0.5) |
+| **L2_episodic** | 0.30 | Factual episodic memory | Slow (0.1) |
+| **L3_hypothesis** | 0.45 | Hypothetical/simulation branch | Moderate (0.2) |
+| **L4_procedural** | 0.60 | Policy/meta-response behavior | Very slow (0.02) |
+| **L5_cultural** | 0.75 | Deployment priors, identity | Near-permanent (0.005) |
+
+```js
+const promo = wdma.computePromotion(memory, {
+  relevance: 0.8, novelty: 0.6, correctness: 0.9, taskValue: 0.7, accessCost: 0.1,
+});
+// { utility: 0.63, targetLayer: 'L4_procedural', promote: true }
+```
+
+---
+
+## Verification Gate
+
+The correctness term `C(m)` is scored by three structural checks:
+
+| Check | Weight | What it validates |
+|-------|--------|-------------------|
+| **Temporal consistency** | 35% | Timeline makes sense, valid_from < valid_to, supersession order |
+| **Source attribution** | 25% | Source metadata exists, session/message refs, trusted origin |
+| **Contradiction handling** | 40% | No unresolved conflicts with verified memories |
+
+```js
+const vResult = await wdma.verify(memory);
+// { correctness: 0.85, passed: true, checks: { temporal, source, contradiction }, flags: [] }
+```
+
+Supply a custom LLM-backed verifier for deeper fact-checking:
+
+```js
+const wdma = createWDMA({
+  customVerifier: async (memory, existingMemories) => {
+    const result = await callLLM(`Is this fact correct? ${memory.fact}`);
+    return result.confidence;  // 0-1
+  },
+});
+```
+
+---
+
+## D0–D5 Benchmark Taxonomy
+
+Generate benchmark cases at 6 difficulty levels from your memory store:
+
+| Level | Name | Tests |
+|-------|------|-------|
+| **D0** | Raw Recall | Direct fact retrieval |
+| **D1** | Temporal Ordering | "Which came first/last?" |
+| **D2** | One-Knob Perturbation | Near-miss confabulation (number swap, entity swap, negation) |
+| **D3** | Contradiction Detection | Conflicting facts, supersession resolution |
+| **D4** | Abstraction | Pattern extraction from episodic memories |
+| **D5** | Calibration | "I don't know" detection, false-certainty |
+
+```js
+const bench = wdma.generateBenchmark({ casesPerLevel: 10 });
+// { cases: [...], metadata: { totalCases: 60, byLevel: { D0: 10, D1: 10, ... } } }
+
+// Export as JSONL for the eval runner
+const jsonl = wdma.benchmark.toJsonl(bench.cases);
+```
+
+---
+
+## Failure-Mode Mitigations
+
+Three architectural safeguards against known failure modes:
+
+### 1. Self-Confirmation Loop Prevention
+
+Memories that **challenge the consensus** get a weight bonus, preventing echo chambers:
+
+```js
+// Automatic during recall — disconfirming memories get boosted
+// Configure the bonus strength:
+createWDMA({ disconfirmationBonus: 0.15 });
+```
+
+### 2. Stale-Memory Contamination Prevention
+
+Progressive decay penalizes old memories that haven't been reconfirmed:
+
+```
+penalty = min(maxPenalty, 1 - 0.5^(age / halfLife))
+```
+
+Critical/high-priority memories decay slower (priority shield).
+
+### 3. Probationary Routing for Causal Claims
+
+Memories containing causal language ("because", "caused by", "leads to") are automatically routed to the **hypothesis layer (L3)** with capped confidence. They must accumulate enough confirmations from downstream task outcomes before promotion:
+
+```js
+wdma.feedback(true, 0.9, memoryId);  // confirm a causal claim
+// After enough confirmations, it gets promoted out of probation
+```
+
+---
+
 ## Weighting Formula
 
 Each memory gets a composite weight:
@@ -263,10 +420,10 @@ Each memory gets a composite weight:
 W(m) = α·recency + β·relevance + γ·reliability + δ·reinforcement
 ```
 
-Then adjusted by a cost multiplier based on the retrieval tier:
+Then adjusted by a cost multiplier and failure mitigations:
 
 ```
-final_weight = W(m) × tierCostMultiplier[tier]
+final_weight = W(m) × tierCostMultiplier[tier] × (1 - staleness) + disconfirmationBonus
 ```
 
 Default coefficients (α + β + γ + δ = 1.0):
@@ -294,6 +451,13 @@ createWDMA({
   weights: { alpha: 0.25, beta: 0.35, gamma: 0.25, delta: 0.15 },
   decayHalfLifeMs: 604800000,        // 7 days
 
+  // Jolt encoding
+  useJoltEncoding: true,              // enable prediction-error gating
+  joltBaseThreshold: 0.2,             // starting threshold
+  joltGrowthRate: 0.08,               // threshold growth per domain experience
+  joltMaxThreshold: 0.85,             // ceiling
+  joltPredictFn: null,                // custom (event, history) => { confidence }
+
   // Ingest
   gateThreshold: 0.15,               // confidence floor for I0 gate
   batchSize: 10,                      // batch buffer size
@@ -303,6 +467,26 @@ createWDMA({
   confidenceFloor: 0.6,              // escalate if below this
   contradictionCeiling: 0.3,         // escalate if above this
   maxTier: 'R3',                     // highest allowed tier
+
+  // Promotion utility (U(m) = αR + βN + γC + δV - λA)
+  promotionAlpha: 0.20,              // relevance weight
+  promotionBeta: 0.20,               // novelty weight
+  promotionGamma: 0.25,              // correctness weight
+  promotionDelta: 0.20,              // task value weight
+  promotionLambda: 0.15,             // cost penalty weight
+  maxErrorRate: 0.1,                 // constraint: max error rate
+  maxBudgetUsd: 0.01,                // constraint: per-query budget
+  maxStalenessMs: 2592000000,        // constraint: 30-day max staleness
+
+  // Verification gate
+  verificationPassThreshold: 0.3,    // minimum correctness to pass
+  customVerifier: null,               // async (memory, existing) => score
+  trustedSources: [],                 // known trusted source IDs
+
+  // Failure mitigations
+  disconfirmationBonus: 0.15,         // bonus for consensus-challenging memories
+  stalenessHalfLifeMs: 1209600000,   // 14 days
+  probationConfidenceCap: 0.6,        // confidence cap for causal claims
 
   // Developmental stages
   initialStage: 'reactive',
@@ -329,14 +513,18 @@ createWDMA({
 Test your memory system against the built-in benchmark:
 
 ```bash
-# Generate a predictions template
-node scripts/run-thermo-eval.mjs
-
 # Run oracle (upper bound) benchmark
 npm run eval:oracle
 
 # Run with your predictions
 node scripts/run-thermo-eval.mjs --predictions eval/thermo-v1.predictions.template.jsonl --label my-run
+```
+
+Generate D0-D5 benchmark cases programmatically:
+
+```js
+const bench = wdma.generateBenchmark({ casesPerLevel: 10, levels: ['D0','D1','D2','D3','D4','D5'] });
+fs.writeFileSync('eval/d0-d5-cases.jsonl', wdma.benchmark.toJsonl(bench.cases));
 ```
 
 Metrics are scored across 3 axes: **Correctness**, **Adaptation**, and **Efficiency**.
@@ -354,7 +542,12 @@ thermodynamic-memory-architecture/
 │   ├── retrieval-ladder.js       # R0-R3 tiered retrieval
 │   ├── weight-calculator.js      # Composite weighting formula
 │   ├── conflict-resolver.js      # Contradiction resolution + audit
-│   └── developmental-stages.js   # Self-evolution stage manager
+│   ├── developmental-stages.js   # Self-evolution stage manager
+│   ├── jolt-encoder.js           # Prediction-error encoding gate
+│   ├── promotion-utility.js      # U(m) formalized objective + L0-L5 routing
+│   ├── verification-gate.js      # Correctness scoring (temporal/source/contradiction)
+│   ├── d0-d5-benchmark.js        # Synthetic benchmark generator
+│   └── failure-mitigations.js    # Disconfirmation, staleness, probation
 ├── examples/
 │   ├── quickstart.js             # Minimal working example
 │   └── agent-integration.js      # Full agent loop example

@@ -35,6 +35,11 @@ npm run example:agent         # full agent loop simulation
 | `weight-calculator.js` | W(m) = α·recency + β·relevance + γ·reliability + δ·reinforcement |
 | `conflict-resolver.js` | Supersession chains, contradiction detection, audit trail |
 | `developmental-stages.js` | REACTIVE → REFLECTIVE → ADAPTIVE → AUTONOMOUS |
+| `jolt-encoder.js` | **Jolt encoding** — prediction-error gate with dynamic thresholds |
+| `promotion-utility.js` | **U(m)** = αR + βN + γC + δV - λA with L0–L5 typed layer routing |
+| `verification-gate.js` | **Correctness gate** — temporal, source, contradiction checks |
+| `d0-d5-benchmark.js` | **D0–D5 taxonomy** — synthetic benchmark generator (6 difficulty levels) |
+| `failure-mitigations.js` | Disconfirmation bonus, staleness penalty, probationary routing |
 
 ### Evaluation Harness (`eval/`)
 

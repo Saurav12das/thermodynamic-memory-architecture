@@ -10,6 +10,11 @@ import { RetrievalLadder } from './retrieval-ladder.js';
 import { WeightCalculator } from './weight-calculator.js';
 import { ConflictResolver } from './conflict-resolver.js';
 import { DevelopmentalStageManager, STAGES } from './developmental-stages.js';
+import { JoltEncoder } from './jolt-encoder.js';
+import { PromotionUtility } from './promotion-utility.js';
+import { VerificationGate } from './verification-gate.js';
+import { D0D5Benchmark } from './d0-d5-benchmark.js';
+import { FailureMitigations } from './failure-mitigations.js';
 
 export { MemoryStore } from './memory-store.js';
 export { IngestPipeline } from './ingest-pipeline.js';
@@ -17,28 +22,16 @@ export { RetrievalLadder } from './retrieval-ladder.js';
 export { WeightCalculator } from './weight-calculator.js';
 export { ConflictResolver } from './conflict-resolver.js';
 export { DevelopmentalStageManager, STAGES } from './developmental-stages.js';
+export { JoltEncoder } from './jolt-encoder.js';
+export { PromotionUtility } from './promotion-utility.js';
+export { VerificationGate } from './verification-gate.js';
+export { D0D5Benchmark } from './d0-d5-benchmark.js';
+export { FailureMitigations } from './failure-mitigations.js';
 
 /**
  * Create a fully wired WDMA memory system with one call.
  *
- * @param {Object} config - Configuration options
- * @param {string} config.persistPath - File path for memory persistence (null for in-memory only)
- * @param {number} config.maxRecords - Maximum memory records before eviction (default: 10000)
- * @param {Object} config.weights - Weight parameters { alpha, beta, gamma, delta }
- * @param {number} config.decayHalfLifeMs - Recency decay half-life in ms (default: 7 days)
- * @param {number} config.gateThreshold - Minimum confidence to pass ingest gate (default: 0.15)
- * @param {number} config.confidenceFloor - Min confidence before retrieval escalation (default: 0.6)
- * @param {string} config.maxTier - Highest retrieval tier allowed (default: 'R3')
- * @param {string} config.initialStage - Starting developmental stage (default: 'reactive')
- * @param {Function} config.extractor - Custom I1 extractor function
- * @param {Function} config.layerRouter - Custom I3 layer router function
- * @param {Function} config.r0Handler - Custom R0 retrieval handler
- * @param {Function} config.r1Handler - Custom R1 retrieval handler
- * @param {Function} config.r2Handler - Custom R2 retrieval handler
- * @param {Function} config.r3Handler - Custom R3 retrieval handler
- * @param {Function} config.onStageChange - Callback when developmental stage changes
- * @param {Function} config.onDrop - Callback when events are dropped at ingest
- *
+ * @param {Object} config - Configuration options (see ADOPTION_GUIDE.md for full reference)
  * @returns {WDMA} Fully wired memory system
  */
 export function createWDMA(config = {}) {
@@ -65,6 +58,14 @@ export class WDMA {
       uncertaintyThreshold: config.uncertaintyThreshold,
     });
 
+    // Jolt-based encoding (replaces naive gate threshold)
+    this.jolt = new JoltEncoder({
+      baseThreshold: config.joltBaseThreshold ?? config.gateThreshold,
+      growthRate: config.joltGrowthRate,
+      maxThreshold: config.joltMaxThreshold,
+      predictFn: config.joltPredictFn,
+    });
+
     // Ingest pipeline
     this.ingest = new IngestPipeline(this.store, {
       gateThreshold: config.gateThreshold,
@@ -87,23 +88,84 @@ export class WDMA {
       r3Handler: config.r3Handler,
     });
 
+    // Promotion utility (formalized U(m) objective)
+    this.promotion = new PromotionUtility({
+      alpha: config.promotionAlpha,
+      beta: config.promotionBeta,
+      gamma: config.promotionGamma,
+      delta: config.promotionDelta,
+      lambda: config.promotionLambda,
+      maxErrorRate: config.maxErrorRate,
+      maxBudgetUsd: config.maxBudgetUsd,
+      maxStalenessMs: config.maxStalenessMs,
+      layerThresholds: config.layerThresholds,
+    });
+
+    // Verification gate (correctness scoring)
+    this.verification = new VerificationGate(this.store, {
+      passThreshold: config.verificationPassThreshold,
+      customVerifier: config.customVerifier,
+      trustedSources: config.trustedSources,
+    });
+
+    // Failure-mode mitigations
+    this.mitigations = new FailureMitigations({
+      disconfirmationBonus: config.disconfirmationBonus,
+      stalenessHalfLifeMs: config.stalenessHalfLifeMs,
+      causalKeywords: config.causalKeywords,
+      probationConfidenceCap: config.probationConfidenceCap,
+    });
+
     // Developmental stage manager
     this.stages = new DevelopmentalStageManager(this.store, this.weights, {
       initialStage: config.initialStage,
       thresholds: config.stageThresholds,
       onStageChange: config.onStageChange,
     });
+
+    // D0-D5 benchmark generator
+    this.benchmark = new D0D5Benchmark({ seed: config.benchmarkSeed });
+
+    // Config flag: use jolt encoding for ingest gate
+    this._useJoltEncoding = config.useJoltEncoding ?? true;
   }
 
   // ── Convenience API ─────────────────────────────────────────────
 
   /**
    * Ingest a memory event (text, fact, or structured record).
-   * Runs through the full I0->I1->I2->I3 pipeline.
+   * Runs through jolt encoding check, then the full I0->I1->I2->I3 pipeline.
+   * Applies failure mitigations (probationary routing for causal claims).
    */
   remember(event) {
+    // Jolt encoding: check if this event is surprising enough to store
+    if (this._useJoltEncoding) {
+      const domain = event.domain || (event.tags && event.tags[0]) || event.type || 'general';
+      const existingMemories = this.store.search(event.fact || event.text || event.content || '', { limit: 10 });
+      const joltResult = this.jolt.evaluate(event, existingMemories);
+
+      if (!joltResult.encode) {
+        // Not surprising enough — skip encoding
+        return null;
+      }
+    }
+
     const record = this.ingest.ingest(event);
-    if (record) this.stages.recordIngestion();
+    if (!record) return null;
+
+    // Apply probationary routing for causal claims
+    const probation = this.mitigations.checkProbationary(record);
+    if (probation.probationary) {
+      if (probation.routeOverride) {
+        record._promotionLayer = probation.routeOverride;
+      }
+      if (probation.confidenceCap) {
+        record.confidence = Math.min(record.confidence, probation.confidenceCap);
+      }
+      this.store.put(record); // update with capped confidence
+    }
+
+    this.stages.recordIngestion();
     return record;
   }
 
@@ -111,14 +173,13 @@ export class WDMA {
    * Ingest multiple events at once.
    */
   rememberAll(events) {
-    const records = this.ingest.ingestBatch(events);
-    for (const _ of records) this.stages.recordIngestion();
-    return records;
+    return events.map(e => this.remember(e)).filter(Boolean);
   }
 
   /**
    * Retrieve memories relevant to a query.
    * Automatically escalates retrieval tier based on confidence/stakes.
+   * Applies verification gate, failure mitigations, and weight ranking.
    *
    * @param {string|Object} query - Query text or { text, stakes?, irreversibility? }
    * @returns {Promise<Object>} RetrievalResult with ranked memories
@@ -149,13 +210,40 @@ export class WDMA {
     result.metadata.conflicts = conflicts;
     result.metadata.uncertainty = uncertainty;
 
-    // Rank by weight
-    const ranked = this.weights.rank(resolved, {
-      queryText: q.text,
-      tier: result.tier,
+    // Verification gate: score correctness for each memory
+    const verifications = await this.verification.verifyBatch(resolved);
+    result.metadata.verifications = verifications.map((v, i) => ({
+      id: resolved[i]?.id,
+      correctness: v.correctness,
+      passed: v.passed,
+      flags: v.flags,
+    }));
+
+    // Rank by weight with failure mitigations
+    const ranked = resolved.map((mem, i) => {
+      const weightResult = this.weights.compute(mem, { queryText: q.text, tier: result.tier });
+      const existingInDomain = resolved.filter(m => m.id !== mem.id);
+
+      // Apply failure mitigations
+      const mitigated = this.mitigations.applyAll(mem, existingInDomain, weightResult.weight);
+
+      return {
+        memory: mem,
+        weight: mitigated.weight,
+        correctness: verifications[i]?.correctness ?? 0.5,
+        mitigations: mitigated.mitigations,
+        components: weightResult.components,
+      };
     });
+
+    ranked.sort((a, b) => b.weight - a.weight);
     result.memories = ranked.map(r => r.memory);
-    result.metadata.weights = ranked.map(r => ({ id: r.memory.id, weight: r.weight, components: r.components }));
+    result.metadata.weights = ranked.map(r => ({
+      id: r.memory.id,
+      weight: r.weight,
+      correctness: r.correctness,
+      components: r.components,
+    }));
 
     // Record access for reinforcement
     for (const m of result.memories) {
@@ -169,10 +257,37 @@ export class WDMA {
   }
 
   /**
-   * Provide feedback on the last retrieval result.
+   * Verify a specific memory's correctness.
    */
-  feedback(correct, score = null) {
+  async verify(memory) {
+    return this.verification.verify(memory);
+  }
+
+  /**
+   * Compute promotion utility for a memory.
+   * Returns the target layer and whether to promote/demote.
+   */
+  computePromotion(memory, signals = {}) {
+    return this.promotion.compute(memory, signals);
+  }
+
+  /**
+   * Provide feedback on the last retrieval result.
+   * Also records probation outcomes for causal claims.
+   */
+  feedback(correct, score = null, memoryId = null) {
     this.stages.recordFeedback(correct, score);
+    if (memoryId) {
+      this.mitigations.recordProbationOutcome(memoryId, correct);
+    }
+  }
+
+  /**
+   * Generate D0-D5 benchmark cases from current memory store.
+   */
+  generateBenchmark(opts = {}) {
+    const memories = this.store.toArray();
+    return this.benchmark.generate(memories, opts);
   }
 
   /**
@@ -191,7 +306,7 @@ export class WDMA {
   }
 
   /**
-   * Get a full system health snapshot.
+   * Get a full system health snapshot including all subsystems.
    */
   health() {
     return {
@@ -201,6 +316,10 @@ export class WDMA {
       stageMetrics: this.stages.metrics,
       ingestStats: this.ingest.stats,
       retrievalStats: this.retrieval.stats,
+      joltStats: this.jolt.stats,
+      verificationStats: this.verification.stats,
+      mitigationStats: this.mitigations.stats,
+      promotionLog: this.promotion.promotionLog.slice(-10), // last 10
     };
   }
 }
