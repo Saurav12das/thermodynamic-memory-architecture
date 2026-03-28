@@ -120,6 +120,14 @@ const evalA = researcher.evaluateAgent(summaryA.name, QUIZ_QUESTIONS, answersA);
 const evalB = researcher.evaluateAgent(summaryB.name, QUIZ_QUESTIONS, answersB);
 const comparison = researcher.compareAgents(evalA, evalB);
 
+// Feed evaluation results back as training signal
+for (const grade of evalA.grades) {
+  agentA.wdma.feedback(grade.correct, grade.score);
+}
+for (const grade of evalB.grades) {
+  agentB.wdma.feedback(grade.correct, grade.score);
+}
+
 console.log('\n  SCORE SUMMARY');
 console.log('  ' + '─'.repeat(55));
 console.log(`  ${'Metric'.padEnd(25)} ${summaryA.name.padEnd(15)} ${summaryB.name}`);
@@ -188,6 +196,62 @@ const benchCases = agentB.wdma.generateBenchmark({ casesPerLevel: 3 });
 const benchPath = path.join(OUT_DIR, `d0-d5-generated-${ts}.jsonl`);
 fs.writeFileSync(benchPath, agentB.wdma.benchmark.toJsonl(benchCases.cases));
 console.log(`  Generated D0-D5 benchmark: ${benchCases.metadata.totalCases} cases → ${path.relative(ROOT, benchPath)}`);
+
+// ═══════════════════════════════════════════════════════════════════
+// Phase 5: Training Data Generation — memory IS training data
+// ═══════════════════════════════════════════════════════════════════
+console.log('\n\nPhase 5: TRAINING DATA GENERATION');
+console.log('─'.repeat(40));
+console.log('  Memory is not just retrieval — memory IS training data.\n');
+
+// Generate full training package from Agent B (more data)
+const trainingPackage = agentB.wdma.generateTrainingData();
+
+console.log(`  Training data totals:`);
+console.log(`    SFT examples:        ${trainingPackage.totals.sftExamples}`);
+console.log(`    DPO preference pairs: ${trainingPackage.totals.dpoExamples}`);
+console.log(`    Negative signal:      ${trainingPackage.totals.negativeExamples}`);
+console.log(`    Memory-based:         ${trainingPackage.totals.memoryExamples}`);
+console.log(`    Curriculum:           ${trainingPackage.totals.curriculumExamples}`);
+console.log(`    ─────────────────────`);
+console.log(`    TOTAL:                ${trainingPackage.totals.total} training examples\n`);
+
+// Export in multiple formats
+const sftPath = path.join(OUT_DIR, `training-sft-${ts}.jsonl`);
+const sftData = agentB.wdma.training.exportOpenAIFormat(trainingPackage.sft.data);
+fs.writeFileSync(sftPath, sftData);
+console.log(`  SFT (OpenAI format):   ${path.relative(ROOT, sftPath)}`);
+
+const dpoPath = path.join(OUT_DIR, `training-dpo-${ts}.jsonl`);
+const dpoData = agentB.wdma.training.exportDPOFormat(trainingPackage.dpo.data);
+fs.writeFileSync(dpoPath, dpoData);
+console.log(`  DPO (preference):      ${path.relative(ROOT, dpoPath)}`);
+
+const memoryPath = path.join(OUT_DIR, `training-memory-${ts}.jsonl`);
+const memoryTrainData = agentB.wdma.training.exportOpenAIFormat(trainingPackage.memoryBased.data);
+fs.writeFileSync(memoryPath, memoryTrainData);
+console.log(`  Memory-as-training:    ${path.relative(ROOT, memoryPath)}`);
+
+const curriculumPath = path.join(OUT_DIR, `training-curriculum-${ts}.jsonl`);
+const curriculumData = agentB.wdma.training.exportCurriculumFormat(trainingPackage.curriculum);
+fs.writeFileSync(curriculumPath, curriculumData);
+console.log(`  Curriculum (D0→D5):    ${path.relative(ROOT, curriculumPath)}`);
+
+// Show curriculum breakdown
+console.log(`\n  Curriculum breakdown by level:`);
+for (const stage of trainingPackage.curriculum.stages) {
+  console.log(`    ${stage.level} ${stage.name}: ${stage.examples.length} examples`);
+}
+
+// Show training pipeline stats
+console.log(`\n  Training pipeline stats:`);
+const tStats = agentB.wdma.training.stats;
+console.log(`    Interactions logged:  ${tStats.interactionsLogged}`);
+console.log(`    Feedback received:    ${tStats.feedbackReceived}`);
+console.log(`    Labeled ratio:        ${tStats.labeledRatio}`);
+console.log(`    Replay buffer size:   ${tStats.replayBufferSize}`);
+console.log(`    Positive examples:    ${tStats.positiveExamples}`);
+console.log(`    Negative examples:    ${tStats.negativeExamples}`);
 
 console.log('\n========================================');
 console.log('  Benchmark complete.');
