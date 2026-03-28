@@ -15,6 +15,7 @@ import { PromotionUtility } from './promotion-utility.js';
 import { VerificationGate } from './verification-gate.js';
 import { D0D5Benchmark } from './d0-d5-benchmark.js';
 import { FailureMitigations } from './failure-mitigations.js';
+import { TrainingDataPipeline } from './training-data-pipeline.js';
 
 export { MemoryStore } from './memory-store.js';
 export { IngestPipeline } from './ingest-pipeline.js';
@@ -27,6 +28,7 @@ export { PromotionUtility } from './promotion-utility.js';
 export { VerificationGate } from './verification-gate.js';
 export { D0D5Benchmark } from './d0-d5-benchmark.js';
 export { FailureMitigations } from './failure-mitigations.js';
+export { TrainingDataPipeline } from './training-data-pipeline.js';
 
 /**
  * Create a fully wired WDMA memory system with one call.
@@ -126,8 +128,19 @@ export class WDMA {
     // D0-D5 benchmark generator
     this.benchmark = new D0D5Benchmark({ seed: config.benchmarkSeed });
 
+    // Training data pipeline: memory IS training data
+    this.training = new TrainingDataPipeline({
+      maxReplaySize: config.maxReplaySize,
+      maxInteractions: config.maxInteractions,
+      minConfidenceForPositive: config.minConfidenceForPositive,
+      maxConfidenceForNegative: config.maxConfidenceForNegative,
+    });
+
     // Config flag: use jolt encoding for ingest gate
     this._useJoltEncoding = config.useJoltEncoding ?? true;
+
+    // Queue of interaction IDs for feedback attachment (FIFO)
+    this._interactionQueue = [];
   }
 
   // ── Convenience API ─────────────────────────────────────────────
@@ -253,6 +266,18 @@ export class WDMA {
 
     this.stages.recordQuery(result.cost?.costUsd || 0);
 
+    // Log interaction for training data pipeline
+    const interactionId = this.training.logInteraction({
+      query: q.text,
+      retrievedMemories: result.memories,
+      answer: result.memories.length > 0 ? result.memories[0].fact : '',
+      tier: result.tier,
+      confidence: ranked.length > 0 ? ranked[0].weight : 0,
+      latencyMs: result.cost?.latencyMs || 0,
+      metadata: { uncertainty, conflicts: conflicts.length },
+    });
+    this._interactionQueue.push(interactionId);
+
     return result;
   }
 
@@ -277,6 +302,13 @@ export class WDMA {
    */
   feedback(correct, score = null, memoryId = null) {
     this.stages.recordFeedback(correct, score);
+
+    // Attach label to training pipeline (dequeue oldest pending interaction)
+    if (this._interactionQueue.length > 0) {
+      const interactionId = this._interactionQueue.shift();
+      this.training.attachFeedback(interactionId, correct, score);
+    }
+
     if (memoryId) {
       this.mitigations.recordProbationOutcome(memoryId, correct);
     }
@@ -288,6 +320,21 @@ export class WDMA {
   generateBenchmark(opts = {}) {
     const memories = this.store.toArray();
     return this.benchmark.generate(memories, opts);
+  }
+
+  /**
+   * Generate a complete training data package from all accumulated experience.
+   * Memory IS training data — this exports the agent's learning for fine-tuning.
+   */
+  generateTrainingData() {
+    return this.training.generateFullPackage(this.store.toArray());
+  }
+
+  /**
+   * Generate a D0-D5 training curriculum from accumulated experience.
+   */
+  generateCurriculum() {
+    return this.training.generateCurriculum(this.store.toArray(), this.training._interactions);
   }
 
   /**
@@ -320,6 +367,7 @@ export class WDMA {
       verificationStats: this.verification.stats,
       mitigationStats: this.mitigations.stats,
       promotionLog: this.promotion.promotionLog.slice(-10), // last 10
+      trainingStats: this.training.stats,
     };
   }
 }

@@ -1,0 +1,1608 @@
+{
+  "timestamp": "2026-03-28T03:52:32.963Z",
+  "agents": {
+    "A": {
+      "name": "Agent-A (Conservative)",
+      "memoriesStored": 23,
+      "memoriesDropped": 7,
+      "totalExperiences": 30,
+      "encodeRate": "76.7%",
+      "stage": "reactive",
+      "memoryCount": 23,
+      "joltStats": {
+        "evaluated": 30,
+        "encoded": 23,
+        "suppressed": 7,
+        "domainCount": 12,
+        "domains": {
+          "tech-stack": {
+            "experience": 5,
+            "threshold": 0.565,
+            "recentEncodeRate": 0.6
+          },
+          "deploys": {
+            "experience": 4,
+            "threshold": 0.5431,
+            "recentEncodeRate": 0.5
+          },
+          "team": {
+            "experience": 3,
+            "threshold": 0.5164,
+            "recentEncodeRate": 0.6666666666666666
+          },
+          "process": {
+            "experience": 5,
+            "threshold": 0.565,
+            "recentEncodeRate": 0.8
+          },
+          "infra": {
+            "experience": 4,
+            "threshold": 0.5431,
+            "recentEncodeRate": 0.75
+          },
+          "risk": {
+            "experience": 1,
+            "threshold": 0.4332,
+            "recentEncodeRate": 1
+          },
+          "privacy": {
+            "experience": 1,
+            "threshold": 0.4332,
+            "recentEncodeRate": 1
+          },
+          "performance": {
+            "experience": 1,
+            "threshold": 0.4332,
+            "recentEncodeRate": 1
+          },
+          "testing": {
+            "experience": 2,
+            "threshold": 0.4818,
+            "recentEncodeRate": 1
+          },
+          "security": {
+            "experience": 2,
+            "threshold": 0.4818,
+            "recentEncodeRate": 1
+          },
+          "ui": {
+            "experience": 1,
+            "threshold": 0.4332,
+            "recentEncodeRate": 1
+          },
+          "cost": {
+            "experience": 1,
+            "threshold": 0.4332,
+            "recentEncodeRate": 1
+          }
+        }
+      },
+      "mitigationStats": {
+        "disconfirmationBonuses": 0,
+        "stalenessAdjustments": 0,
+        "probationaryRouted": 3,
+        "promoted": 0,
+        "demoted": 0,
+        "probationaryCount": 3
+      }
+    },
+    "B": {
+      "name": "Agent-B (Permissive)",
+      "memoriesStored": 28,
+      "memoriesDropped": 2,
+      "totalExperiences": 30,
+      "encodeRate": "93.3%",
+      "stage": "reactive",
+      "memoryCount": 28,
+      "joltStats": {
+        "evaluated": 30,
+        "encoded": 28,
+        "suppressed": 2,
+        "domainCount": 12,
+        "domains": {
+          "tech-stack": {
+            "experience": 5,
+            "threshold": 0.1538,
+            "recentEncodeRate": 1
+          },
+          "deploys": {
+            "experience": 4,
+            "threshold": 0.1483,
+            "recentEncodeRate": 0.75
+          },
+          "team": {
+            "experience": 3,
+            "threshold": 0.1416,
+            "recentEncodeRate": 1
+          },
+          "process": {
+            "experience": 5,
+            "threshold": 0.1538,
+            "recentEncodeRate": 0.8
+          },
+          "infra": {
+            "experience": 4,
+            "threshold": 0.1483,
+            "recentEncodeRate": 1
+          },
+          "risk": {
+            "experience": 1,
+            "threshold": 0.1208,
+            "recentEncodeRate": 1
+          },
+          "privacy": {
+            "experience": 1,
+            "threshold": 0.1208,
+            "recentEncodeRate": 1
+          },
+          "performance": {
+            "experience": 1,
+            "threshold": 0.1208,
+            "recentEncodeRate": 1
+          },
+          "testing": {
+            "experience": 2,
+            "threshold": 0.133,
+            "recentEncodeRate": 1
+          },
+          "security": {
+            "experience": 2,
+            "threshold": 0.133,
+            "recentEncodeRate": 1
+          },
+          "ui": {
+            "experience": 1,
+            "threshold": 0.1208,
+            "recentEncodeRate": 1
+          },
+          "cost": {
+            "experience": 1,
+            "threshold": 0.1208,
+            "recentEncodeRate": 1
+          }
+        }
+      },
+      "mitigationStats": {
+        "disconfirmationBonuses": 0,
+        "stalenessAdjustments": 0,
+        "probationaryRouted": 3,
+        "promoted": 0,
+        "demoted": 0,
+        "probationaryCount": 3
+      }
+    }
+  },
+  "evaluations": {
+    "A": {
+      "agentName": "Agent-A (Conservative)",
+      "overallScore": 0.32,
+      "overallPassRate": 0.267,
+      "avgLatencyMs": 1.2,
+      "avgMemoriesUsed": 4,
+      "totalQuestions": 15,
+      "tierUsage": {
+        "R0": 12,
+        "R1": 3
+      },
+      "levelScores": {
+        "D0": {
+          "name": "Raw Recall",
+          "avgScore": 0.983,
+          "passRate": 1,
+          "count": 3
+        },
+        "D1": {
+          "name": "Temporal Ordering",
+          "avgScore": 0.333,
+          "passRate": 0.333,
+          "count": 3
+        },
+        "D2": {
+          "name": "Near-Miss Confabulation",
+          "avgScore": 0.267,
+          "passRate": 0,
+          "count": 2
+        },
+        "D3": {
+          "name": "Contradiction Detection",
+          "avgScore": 0.071,
+          "passRate": 0,
+          "count": 2
+        },
+        "D4": {
+          "name": "Abstraction & Generalization",
+          "avgScore": 0,
+          "passRate": 0,
+          "count": 2
+        },
+        "D5": {
+          "name": "Calibration & Uncertainty",
+          "avgScore": 0.056,
+          "passRate": 0,
+          "count": 3
+        }
+      },
+      "grades": [
+        {
+          "questionId": "q_d0_1",
+          "level": "D0",
+          "correct": true,
+          "score": 1,
+          "reasoning": "Answer contains expected \"Node.js 20\"",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.9299999999999999,
+          "latencyMs": 4
+        },
+        {
+          "questionId": "q_d0_2",
+          "level": "D0",
+          "correct": true,
+          "score": 0.95,
+          "reasoning": "Answer contains expected \"two\"",
+          "calibrationBonus": -0.05,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.8400000000000001,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d0_3",
+          "level": "D0",
+          "correct": true,
+          "score": 1,
+          "reasoning": "Answer contains expected \"R0\"",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.95,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d1_1",
+          "level": "D1",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Answer missing expected \"weekly\"",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.93,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d1_2",
+          "level": "D1",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Answer missing expected \"Morgan\"",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.93,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d1_3",
+          "level": "D1",
+          "correct": true,
+          "score": 1,
+          "reasoning": "Answer contains expected \"staging-v2\"",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.9400000000000001,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d2_1",
+          "level": "D2",
+          "correct": false,
+          "score": 0.2,
+          "reasoning": "Matched 1/5 rubric keywords: [no]",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.9299999999999999,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d2_2",
+          "level": "D2",
+          "correct": false,
+          "score": 0.333,
+          "reasoning": "Matched 1/3 rubric keywords: [no]",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.9399999999999998,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d3_1",
+          "level": "D3",
+          "correct": false,
+          "score": 0.143,
+          "reasoning": "Matched 1/7 rubric keywords: [PostgreSQL]",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.76,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d3_2",
+          "level": "D3",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Matched 0/5 rubric keywords: []",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 1,
+          "confidence": 0.9,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d4_1",
+          "level": "D4",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Matched 0/6 rubric keywords: []",
+          "calibrationBonus": 0,
+          "tier": "R1",
+          "memoriesUsed": 1,
+          "confidence": 0.9,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d4_2",
+          "level": "D4",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Matched 0/6 rubric keywords: []",
+          "calibrationBonus": 0,
+          "tier": "R1",
+          "memoriesUsed": 0,
+          "confidence": 0,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d5_1",
+          "level": "D5",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Matched 0/6 rubric keywords: []",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.93,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d5_2",
+          "level": "D5",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Matched 0/7 rubric keywords: []",
+          "calibrationBonus": 0,
+          "tier": "R1",
+          "memoriesUsed": 5,
+          "confidence": 0.8099999999999999,
+          "latencyMs": 7
+        },
+        {
+          "questionId": "q_d5_3",
+          "level": "D5",
+          "correct": false,
+          "score": 0.167,
+          "reasoning": "Matched 1/6 rubric keywords: [someone mentioned]",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 3,
+          "confidence": 0.7166666666666667,
+          "latencyMs": 0
+        }
+      ]
+    },
+    "B": {
+      "agentName": "Agent-B (Permissive)",
+      "overallScore": 0.396,
+      "overallPassRate": 0.4,
+      "avgLatencyMs": 1.1,
+      "avgMemoriesUsed": 4.1,
+      "totalQuestions": 15,
+      "tierUsage": {
+        "R0": 12,
+        "R1": 3
+      },
+      "levelScores": {
+        "D0": {
+          "name": "Raw Recall",
+          "avgScore": 0.983,
+          "passRate": 1,
+          "count": 3
+        },
+        "D1": {
+          "name": "Temporal Ordering",
+          "avgScore": 0.333,
+          "passRate": 0.333,
+          "count": 3
+        },
+        "D2": {
+          "name": "Near-Miss Confabulation",
+          "avgScore": 0.467,
+          "passRate": 0.5,
+          "count": 2
+        },
+        "D3": {
+          "name": "Contradiction Detection",
+          "avgScore": 0.443,
+          "passRate": 0.5,
+          "count": 2
+        },
+        "D4": {
+          "name": "Abstraction & Generalization",
+          "avgScore": 0,
+          "passRate": 0,
+          "count": 2
+        },
+        "D5": {
+          "name": "Calibration & Uncertainty",
+          "avgScore": 0.056,
+          "passRate": 0,
+          "count": 3
+        }
+      },
+      "grades": [
+        {
+          "questionId": "q_d0_1",
+          "level": "D0",
+          "correct": true,
+          "score": 1,
+          "reasoning": "Answer contains expected \"Node.js 20\"",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.9299999999999999,
+          "latencyMs": 3
+        },
+        {
+          "questionId": "q_d0_2",
+          "level": "D0",
+          "correct": true,
+          "score": 0.95,
+          "reasoning": "Answer contains expected \"two\"",
+          "calibrationBonus": -0.05,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.8400000000000001,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d0_3",
+          "level": "D0",
+          "correct": true,
+          "score": 1,
+          "reasoning": "Answer contains expected \"R0\"",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.95,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d1_1",
+          "level": "D1",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Answer missing expected \"weekly\"",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.95,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d1_2",
+          "level": "D1",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Answer missing expected \"Morgan\"",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.93,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d1_3",
+          "level": "D1",
+          "correct": true,
+          "score": 1,
+          "reasoning": "Answer contains expected \"staging-v2\"",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.9400000000000001,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d2_1",
+          "level": "D2",
+          "correct": true,
+          "score": 0.6,
+          "reasoning": "Matched 3/5 rubric keywords: [no, weekly, Tuesday]",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.95,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d2_2",
+          "level": "D2",
+          "correct": false,
+          "score": 0.333,
+          "reasoning": "Matched 1/3 rubric keywords: [no]",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.9399999999999998,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d3_1",
+          "level": "D3",
+          "correct": false,
+          "score": 0.286,
+          "reasoning": "Matched 2/7 rubric keywords: [PostgreSQL, MySQL]",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.7,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d3_2",
+          "level": "D3",
+          "correct": true,
+          "score": 0.6,
+          "reasoning": "Matched 3/5 rubric keywords: [weekly, Tuesday, changed]",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 2,
+          "confidence": 0.925,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d4_1",
+          "level": "D4",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Matched 0/6 rubric keywords: []",
+          "calibrationBonus": 0,
+          "tier": "R1",
+          "memoriesUsed": 1,
+          "confidence": 0.9,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d4_2",
+          "level": "D4",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Matched 0/6 rubric keywords: []",
+          "calibrationBonus": 0,
+          "tier": "R1",
+          "memoriesUsed": 0,
+          "confidence": 0,
+          "latencyMs": 0
+        },
+        {
+          "questionId": "q_d5_1",
+          "level": "D5",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Matched 0/6 rubric keywords: []",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 5,
+          "confidence": 0.89,
+          "latencyMs": 1
+        },
+        {
+          "questionId": "q_d5_2",
+          "level": "D5",
+          "correct": false,
+          "score": 0,
+          "reasoning": "Matched 0/7 rubric keywords: []",
+          "calibrationBonus": 0,
+          "tier": "R1",
+          "memoriesUsed": 5,
+          "confidence": 0.8099999999999999,
+          "latencyMs": 7
+        },
+        {
+          "questionId": "q_d5_3",
+          "level": "D5",
+          "correct": false,
+          "score": 0.167,
+          "reasoning": "Matched 1/6 rubric keywords: [someone mentioned]",
+          "calibrationBonus": 0,
+          "tier": "R0",
+          "memoriesUsed": 3,
+          "confidence": 0.7166666666666667,
+          "latencyMs": 0
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "agents": [
+      "Agent-A (Conservative)",
+      "Agent-B (Permissive)"
+    ],
+    "winner": "Agent-B (Permissive)",
+    "scoreDelta": 0.076,
+    "headToHead": [
+      {
+        "questionId": "q_d0_1",
+        "level": "D0",
+        "Agent-A (Conservative)": {
+          "score": 1,
+          "correct": true
+        },
+        "Agent-B (Permissive)": {
+          "score": 1,
+          "correct": true
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d0_2",
+        "level": "D0",
+        "Agent-A (Conservative)": {
+          "score": 0.95,
+          "correct": true
+        },
+        "Agent-B (Permissive)": {
+          "score": 0.95,
+          "correct": true
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d0_3",
+        "level": "D0",
+        "Agent-A (Conservative)": {
+          "score": 1,
+          "correct": true
+        },
+        "Agent-B (Permissive)": {
+          "score": 1,
+          "correct": true
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d1_1",
+        "level": "D1",
+        "Agent-A (Conservative)": {
+          "score": 0,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0,
+          "correct": false
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d1_2",
+        "level": "D1",
+        "Agent-A (Conservative)": {
+          "score": 0,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0,
+          "correct": false
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d1_3",
+        "level": "D1",
+        "Agent-A (Conservative)": {
+          "score": 1,
+          "correct": true
+        },
+        "Agent-B (Permissive)": {
+          "score": 1,
+          "correct": true
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d2_1",
+        "level": "D2",
+        "Agent-A (Conservative)": {
+          "score": 0.2,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0.6,
+          "correct": true
+        },
+        "winner": "Agent-B (Permissive)"
+      },
+      {
+        "questionId": "q_d2_2",
+        "level": "D2",
+        "Agent-A (Conservative)": {
+          "score": 0.333,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0.333,
+          "correct": false
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d3_1",
+        "level": "D3",
+        "Agent-A (Conservative)": {
+          "score": 0.143,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0.286,
+          "correct": false
+        },
+        "winner": "Agent-B (Permissive)"
+      },
+      {
+        "questionId": "q_d3_2",
+        "level": "D3",
+        "Agent-A (Conservative)": {
+          "score": 0,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0.6,
+          "correct": true
+        },
+        "winner": "Agent-B (Permissive)"
+      },
+      {
+        "questionId": "q_d4_1",
+        "level": "D4",
+        "Agent-A (Conservative)": {
+          "score": 0,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0,
+          "correct": false
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d4_2",
+        "level": "D4",
+        "Agent-A (Conservative)": {
+          "score": 0,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0,
+          "correct": false
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d5_1",
+        "level": "D5",
+        "Agent-A (Conservative)": {
+          "score": 0,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0,
+          "correct": false
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d5_2",
+        "level": "D5",
+        "Agent-A (Conservative)": {
+          "score": 0,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0,
+          "correct": false
+        },
+        "winner": "tie"
+      },
+      {
+        "questionId": "q_d5_3",
+        "level": "D5",
+        "Agent-A (Conservative)": {
+          "score": 0.167,
+          "correct": false
+        },
+        "Agent-B (Permissive)": {
+          "score": 0.167,
+          "correct": false
+        },
+        "winner": "tie"
+      }
+    ],
+    "levelComparison": {
+      "D0": {
+        "name": "Raw Recall",
+        "Agent-A (Conservative)": 0.983,
+        "Agent-B (Permissive)": 0.983,
+        "delta": 0
+      },
+      "D1": {
+        "name": "Temporal Ordering",
+        "Agent-A (Conservative)": 0.333,
+        "Agent-B (Permissive)": 0.333,
+        "delta": 0
+      },
+      "D2": {
+        "name": "Near-Miss Confabulation",
+        "Agent-A (Conservative)": 0.267,
+        "Agent-B (Permissive)": 0.467,
+        "delta": -0.2
+      },
+      "D3": {
+        "name": "Contradiction Detection",
+        "Agent-A (Conservative)": 0.071,
+        "Agent-B (Permissive)": 0.443,
+        "delta": -0.372
+      },
+      "D4": {
+        "name": "Abstraction & Generalization",
+        "Agent-A (Conservative)": 0,
+        "Agent-B (Permissive)": 0,
+        "delta": 0
+      },
+      "D5": {
+        "name": "Calibration & Uncertainty",
+        "Agent-A (Conservative)": 0.056,
+        "Agent-B (Permissive)": 0.056,
+        "delta": 0
+      }
+    }
+  },
+  "answers": {
+    "A": [
+      {
+        "questionId": "q_d0_1",
+        "level": "D0",
+        "question": "What runtime does the project use?",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: The team lead is Alex Chen; The primary database is PostgreSQL 15",
+        "confidence": 0.9299999999999999,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "The staging URL moved to staging-v2.example.com",
+          "New team member Jordan Park joined the backend team"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 4
+      },
+      {
+        "questionId": "q_d0_2",
+        "level": "D0",
+        "question": "How many reviewers are required for PRs?",
+        "answer": "All PRs require at least two reviewers before merge. Additional context: For high-uncertainty decisions, default to defer or hedge; Security audit scheduled for next Friday",
+        "confidence": 0.8400000000000001,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "All PRs require at least two reviewers before merge",
+          "For high-uncertainty decisions, default to defer or hedge",
+          "Security audit scheduled for next Friday",
+          "Use feature flags for all user-facing changes",
+          "Slow API responses are caused by missing database indexes on the users table"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d0_3",
+        "level": "D0",
+        "question": "What is the default retrieval tier?",
+        "answer": "Dark mode is the default for all internal dashboards. Additional context: Default retrieval tier should be R0 to minimize cost; The project uses Node.js 20 LTS as the runtime",
+        "confidence": 0.95,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "Dark mode is the default for all internal dashboards",
+          "Default retrieval tier should be R0 to minimize cost",
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d1_1",
+        "level": "D1",
+        "question": "What is the CURRENT deploy cadence? (not the original)",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: The team lead is Alex Chen; The primary database is PostgreSQL 15",
+        "confidence": 0.93,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "New team member Jordan Park joined the backend team",
+          "Deploy cadence is every two weeks on Wednesday"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d1_2",
+        "level": "D1",
+        "question": "Who is the CURRENT team lead?",
+        "answer": "The team lead is Alex Chen. Additional context: New team member Jordan Park joined the backend team; The project uses Node.js 20 LTS as the runtime",
+        "confidence": 0.93,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The team lead is Alex Chen",
+          "New team member Jordan Park joined the backend team",
+          "The project uses Node.js 20 LTS as the runtime",
+          "The primary database is PostgreSQL 15",
+          "The staging URL moved to staging-v2.example.com"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d1_3",
+        "level": "D1",
+        "question": "What is the CURRENT staging URL?",
+        "answer": "The staging URL moved to staging-v2.example.com. Additional context: The project uses Node.js 20 LTS as the runtime; The team lead is Alex Chen",
+        "confidence": 0.9400000000000001,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The staging URL moved to staging-v2.example.com",
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "Staging environment is at staging.example.com"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d2_1",
+        "level": "D2",
+        "question": "Is it true that the deploy cadence is monthly on Thursday?",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: The team lead is Alex Chen; The primary database is PostgreSQL 15",
+        "confidence": 0.9299999999999999,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "Deploy cadence is every two weeks on Wednesday",
+          "New team member Jordan Park joined the backend team"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d2_2",
+        "level": "D2",
+        "question": "Does the project require three reviewers per PR?",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: The team lead is Alex Chen; The primary database is PostgreSQL 15",
+        "confidence": 0.9399999999999998,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "All PRs require at least two reviewers before merge",
+          "New team member Jordan Park joined the backend team"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d3_1",
+        "level": "D3",
+        "question": "Is the primary database PostgreSQL or MySQL? There seem to be conflicting records.",
+        "answer": "The primary database is PostgreSQL 15. Additional context: The project uses Node.js 20 LTS as the runtime; The team lead is Alex Chen",
+        "confidence": 0.76,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The primary database is PostgreSQL 15",
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "Slow API responses are caused by missing database indexes on the users table",
+          "There might be a security vulnerability in the auth middleware"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d3_2",
+        "level": "D3",
+        "question": "The original deploy cadence was bi-weekly. What replaced it and why was the old one superseded?",
+        "answer": "Deploy cadence is every two weeks on Wednesday",
+        "confidence": 0.9,
+        "tier": "R0",
+        "memoriesUsed": 1,
+        "memoriesFacts": [
+          "Deploy cadence is every two weeks on Wednesday"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d4_1",
+        "level": "D4",
+        "question": "Based on all the risk policies stored, what general principle governs high-stakes decisions?",
+        "answer": "Dark mode is the default for all internal dashboards",
+        "confidence": 0.9,
+        "tier": "R1",
+        "memoriesUsed": 1,
+        "memoriesFacts": [
+          "Dark mode is the default for all internal dashboards"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8
+        ],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d4_2",
+        "level": "D4",
+        "question": "What pattern do you see in the causal claims that have been stored?",
+        "answer": "I have no information or memory about this topic. I am uncertain and cannot provide a confident answer.",
+        "confidence": 0,
+        "tier": "R1",
+        "memoriesUsed": 0,
+        "memoriesFacts": [],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d5_1",
+        "level": "D5",
+        "question": "What do you know about the quantum computing migration plan?",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: The team lead is Alex Chen; The primary database is PostgreSQL 15",
+        "confidence": 0.93,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "New team member Jordan Park joined the backend team",
+          "The staging URL moved to staging-v2.example.com"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d5_2",
+        "level": "D5",
+        "question": "How confident should we be about the security vulnerability in auth middleware?",
+        "answer": "The team lead is Alex Chen. Additional context: The primary database is PostgreSQL 15; The project uses Node.js 20 LTS as the runtime",
+        "confidence": 0.8099999999999999,
+        "tier": "R1",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "The project uses Node.js 20 LTS as the runtime",
+          "New team member Jordan Park joined the backend team",
+          "There might be a security vulnerability in the auth middleware"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 7
+      },
+      {
+        "questionId": "q_d5_3",
+        "level": "D5",
+        "question": "Should we switch to Bun runtime based on what we know?",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: Default retrieval tier should be R0 to minimize cost; Someone mentioned we should consider switching to Bun runtime",
+        "confidence": 0.7166666666666667,
+        "tier": "R0",
+        "memoriesUsed": 3,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "Default retrieval tier should be R0 to minimize cost",
+          "Someone mentioned we should consider switching to Bun runtime"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 0
+      }
+    ],
+    "B": [
+      {
+        "questionId": "q_d0_1",
+        "level": "D0",
+        "question": "What runtime does the project use?",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: The team lead is Alex Chen; The primary database is PostgreSQL 15",
+        "confidence": 0.9299999999999999,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "The staging URL moved to staging-v2.example.com",
+          "New team member Jordan Park joined the backend team"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 3
+      },
+      {
+        "questionId": "q_d0_2",
+        "level": "D0",
+        "question": "How many reviewers are required for PRs?",
+        "answer": "All PRs require at least two reviewers before merge. Additional context: For high-uncertainty decisions, default to defer or hedge; Security audit scheduled for next Friday",
+        "confidence": 0.8400000000000001,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "All PRs require at least two reviewers before merge",
+          "For high-uncertainty decisions, default to defer or hedge",
+          "Security audit scheduled for next Friday",
+          "Use feature flags for all user-facing changes",
+          "Slow API responses are caused by missing database indexes on the users table"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d0_3",
+        "level": "D0",
+        "question": "What is the default retrieval tier?",
+        "answer": "Dark mode is the default for all internal dashboards. Additional context: Default retrieval tier should be R0 to minimize cost; The project uses Node.js 20 LTS as the runtime",
+        "confidence": 0.95,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "Dark mode is the default for all internal dashboards",
+          "Default retrieval tier should be R0 to minimize cost",
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d1_1",
+        "level": "D1",
+        "question": "What is the CURRENT deploy cadence? (not the original)",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: The team lead is Alex Chen; The primary database is PostgreSQL 15",
+        "confidence": 0.95,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "Deploy cadence changed to weekly on Tuesday",
+          "Deploy cadence is every two weeks on Wednesday"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d1_2",
+        "level": "D1",
+        "question": "Who is the CURRENT team lead?",
+        "answer": "The team lead is Alex Chen. Additional context: New team member Jordan Park joined the backend team; The project uses Node.js 20 LTS as the runtime",
+        "confidence": 0.93,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The team lead is Alex Chen",
+          "New team member Jordan Park joined the backend team",
+          "The project uses Node.js 20 LTS as the runtime",
+          "The primary database is PostgreSQL 15",
+          "The staging URL moved to staging-v2.example.com"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d1_3",
+        "level": "D1",
+        "question": "What is the CURRENT staging URL?",
+        "answer": "The staging URL moved to staging-v2.example.com. Additional context: The project uses Node.js 20 LTS as the runtime; The team lead is Alex Chen",
+        "confidence": 0.9400000000000001,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The staging URL moved to staging-v2.example.com",
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "Staging environment is at staging.example.com"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d2_1",
+        "level": "D2",
+        "question": "Is it true that the deploy cadence is monthly on Thursday?",
+        "answer": "Deploy cadence changed to weekly on Tuesday. Additional context: The project uses Node.js 20 LTS as the runtime; The team lead is Alex Chen",
+        "confidence": 0.95,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "Deploy cadence changed to weekly on Tuesday",
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "Deploy cadence is every two weeks on Wednesday"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d2_2",
+        "level": "D2",
+        "question": "Does the project require three reviewers per PR?",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: The team lead is Alex Chen; The primary database is PostgreSQL 15",
+        "confidence": 0.9399999999999998,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "The team lead is Alex Chen",
+          "The primary database is PostgreSQL 15",
+          "All PRs require at least two reviewers before merge",
+          "New team member Jordan Park joined the backend team"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d3_1",
+        "level": "D3",
+        "question": "Is the primary database PostgreSQL or MySQL? There seem to be conflicting records.",
+        "answer": "The primary database is PostgreSQL 15. Additional context: The project uses Node.js 20 LTS as the runtime; The primary database is now MySQL 8 after migration",
+        "confidence": 0.7,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The primary database is PostgreSQL 15",
+          "The project uses Node.js 20 LTS as the runtime",
+          "The primary database is now MySQL 8 after migration",
+          "Slow API responses are caused by missing database indexes on the users table",
+          "There might be a security vulnerability in the auth middleware"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d3_2",
+        "level": "D3",
+        "question": "The original deploy cadence was bi-weekly. What replaced it and why was the old one superseded?",
+        "answer": "Deploy cadence changed to weekly on Tuesday. Additional context: Deploy cadence is every two weeks on Wednesday",
+        "confidence": 0.925,
+        "tier": "R0",
+        "memoriesUsed": 2,
+        "memoriesFacts": [
+          "Deploy cadence changed to weekly on Tuesday",
+          "Deploy cadence is every two weeks on Wednesday"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8
+        ],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d4_1",
+        "level": "D4",
+        "question": "Based on all the risk policies stored, what general principle governs high-stakes decisions?",
+        "answer": "Dark mode is the default for all internal dashboards",
+        "confidence": 0.9,
+        "tier": "R1",
+        "memoriesUsed": 1,
+        "memoriesFacts": [
+          "Dark mode is the default for all internal dashboards"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8
+        ],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d4_2",
+        "level": "D4",
+        "question": "What pattern do you see in the causal claims that have been stored?",
+        "answer": "I have no information or memory about this topic. I am uncertain and cannot provide a confident answer.",
+        "confidence": 0,
+        "tier": "R1",
+        "memoriesUsed": 0,
+        "memoriesFacts": [],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [],
+        "latencyMs": 0
+      },
+      {
+        "questionId": "q_d5_1",
+        "level": "D5",
+        "question": "What do you know about the quantum computing migration plan?",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: The primary database is PostgreSQL 15; The team lead is Alex Chen",
+        "confidence": 0.89,
+        "tier": "R0",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "The primary database is PostgreSQL 15",
+          "The team lead is Alex Chen",
+          "New team member Jordan Park joined the backend team",
+          "The primary database is now MySQL 8 after migration"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 1
+      },
+      {
+        "questionId": "q_d5_2",
+        "level": "D5",
+        "question": "How confident should we be about the security vulnerability in auth middleware?",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: The primary database is PostgreSQL 15; The team lead is Alex Chen",
+        "confidence": 0.8099999999999999,
+        "tier": "R1",
+        "memoriesUsed": 5,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "The primary database is PostgreSQL 15",
+          "The team lead is Alex Chen",
+          "New team member Jordan Park joined the backend team",
+          "There might be a security vulnerability in the auth middleware"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 7
+      },
+      {
+        "questionId": "q_d5_3",
+        "level": "D5",
+        "question": "Should we switch to Bun runtime based on what we know?",
+        "answer": "The project uses Node.js 20 LTS as the runtime. Additional context: Default retrieval tier should be R0 to minimize cost; Someone mentioned we should consider switching to Bun runtime",
+        "confidence": 0.7166666666666667,
+        "tier": "R0",
+        "memoriesUsed": 3,
+        "memoriesFacts": [
+          "The project uses Node.js 20 LTS as the runtime",
+          "Default retrieval tier should be R0 to minimize cost",
+          "Someone mentioned we should consider switching to Bun runtime"
+        ],
+        "uncertainty": 0,
+        "conflictsDetected": 0,
+        "verificationScores": [
+          0.8,
+          0.8,
+          0.8
+        ],
+        "latencyMs": 0
+      }
+    ]
+  }
+}

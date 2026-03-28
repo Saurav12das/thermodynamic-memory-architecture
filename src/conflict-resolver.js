@@ -181,10 +181,28 @@ export class ConflictResolver {
             a.fact !== b.fact &&
             !a.supersedes?.includes(b.id) &&
             !b.supersedes?.includes(a.id)) {
-          pairs.push([a, b]);
+          // Only flag if facts are about the same topic (high word overlap)
+          // but say different things (not identical)
+          const similarity = this._factSimilarity(a.fact, b.fact);
+          if (similarity > 0.35 && similarity < 0.9) {
+            pairs.push([a, b]);
+          }
         }
       }
     }
     return pairs;
+  }
+
+  /** Jaccard similarity between two facts based on word overlap */
+  _factSimilarity(factA, factB) {
+    const wordsA = new Set(factA.toLowerCase().split(/\s+/).filter(w => w.length > 2));
+    const wordsB = new Set(factB.toLowerCase().split(/\s+/).filter(w => w.length > 2));
+    if (wordsA.size === 0 && wordsB.size === 0) return 1;
+    if (wordsA.size === 0 || wordsB.size === 0) return 0;
+    let intersection = 0;
+    for (const w of wordsA) {
+      if (wordsB.has(w)) intersection++;
+    }
+    return intersection / (wordsA.size + wordsB.size - intersection);
   }
 }
